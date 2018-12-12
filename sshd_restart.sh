@@ -2,7 +2,6 @@
 #Desc: Script To Start SSH Service If Not Running
 op=`sudo service sshd status`
 OUT="/var/log/sshd_service_log"
-echo $op
 if [[ $op == *"running"* ]]; 
 then  
  echo "`date +%D+%T` : SSH Service Is Healthy" >> $OUT
