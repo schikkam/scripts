@@ -1,0 +1,32 @@
+
+How to build UDFs in vertica: 
+-----------------------------
+Verita by-default provides source files which we can use it build and we just need to refer sdk directory and build the same.
+
+Following example builds adds agg_concatenate function.
+
+$ cd /opt/vertica/sdk/examples/AggregateFunctions 
+$ sudo g++ -D HAVE_LONG_INT_64 -I /opt/vertica/sdk/include -Wall -shared -Wno-unused-value -fPIC -o Concatenate.so Concatenate.cpp /opt/vertica/sdk/include/Vertica.cpp
+
+Note :I've Concatenate.cpp in the current directory, so skipped absoulte path, incase if you have somewhere else then please specify it. Also make sure to run the above command as sudo or login as roor and perform the same
+
+.so file gets created in the same directory, specify absoulte path as you wish.
+
+Once it gets built we can just tell vertica library to include this by using the following cmd: 
+
+VSQL> CREATE LIBRARY AggregateFunctionsConcatenate AS '/opt/vertica/sdk/examples/AggregateFunctions/Concatenate.so';
+
+Once loaded, we can create a custom function as below: 
+
+VSQL> CREATE AGGREGATE FUNCTION agg_concatenate AS LANGUAGE 'C++' NAME 'ConcatenateFactory' LIBRARY AggregateFunctionsConcatenate;
+
+
+
+How to Check if a UDF is built and exist: 
+-----------------------------------------
+
+VSQL> select * from user_functions where function_name='agg_concatenate';
+
+
+
+
