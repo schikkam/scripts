@@ -30,3 +30,5 @@ VSQL> select * from user_functions where function_name='agg_concatenate';
 
 
 
+Note : If gcc is not installed , then we can install it prior to above steps. 
+ $yum -y install gcc gcc-c++ # On centOs
